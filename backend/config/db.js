@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 // const colors = require("colors");
 // const { response } = require("express");
 
-const connectDB = async (req,res) => {
+const connectDB = async (req,res) => {    
   try {
     await mongoose.connect(process.env.MONGO_URL);
     // res.status(200).send({
