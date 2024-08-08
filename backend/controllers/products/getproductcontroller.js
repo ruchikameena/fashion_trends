@@ -4,7 +4,7 @@ const ProductCollection = require("../../models/ProductSchema");
 const getproductcontroller = async (req, res) => {
 
     try {
-        const { category, name, sub_category } = req.params; //url se koi cheze jayegi toh paramas----,req.body,req.files bhi hota hai 
+        const { category, name, sub_category,id } = req.params; //url se koi cheze jayegi toh paramas----,req.body,req.files bhi hota hai 
         let products;
         if (category) {
             const searchCategory = category.toLowerCase();
@@ -23,6 +23,29 @@ const getproductcontroller = async (req, res) => {
             products = await ProductCollection.find({
                 sub_category: { $regex: new RegExp(searchsubcategory, "i") }
             });
+        }
+        else if (id) {
+            products = await ProductCollection.find({
+                _id:id,
+            });
+        }
+        else if (req.path.includes('/random')) {
+            products = await ProductCollection.aggregate([
+                {
+                    $sample:{
+                        size:9,
+                    },
+                },
+            ]);
+        }
+        else if (req.path.includes('/top_rated')) {
+            products = await ProductCollection.find().sort({rating:-1}).limit(9);
+        }
+        else if (req.path.includes('/low_to_high')) {
+            products = await ProductCollection.find().sort({new_price:1}).limit(9);//+1 for ascending order
+        }
+        else if (req.path.includes('/high_to_low')) {
+            products = await ProductCollection.find().sort({new_price:-1}).limit(9);//-1 for decending order
         }
         else {
             products = await ProductCollection.find();

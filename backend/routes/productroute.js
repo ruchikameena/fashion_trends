@@ -13,4 +13,14 @@ router.get("/name/:name", getproductcontroller);
 
 router.get("/sub_category/:sub_category", getproductcontroller);
 
+router.get("/id/:id", getproductcontroller);
+
+router.get("/random", getproductcontroller);
+
+router.get("/top_rated", getproductcontroller);
+
+router.get("/low_to_high", getproductcontroller);
+
+router.get("/high_to_low", getproductcontroller);
+
 module.exports = router;
